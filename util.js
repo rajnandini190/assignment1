@@ -5,7 +5,33 @@
             return folderIdCounter;
         }
 
-       
+        function createFolderButtons(){
+            let folderButton = document.createElement("button");
+            folderButton.innerText = "📁";
+            folderButton.classList.add("sub-icon")
+            folderButton.setAttribute("onclick", "addFolder(this)")
+
+            let fileButton = document.createElement("button")
+            fileButton.innerHTML ="📄"
+            fileButton.classList.add("sub-icon")
+            fileButton.setAttribute("onclick", "addFile(this)")
+
+            let deleteButton = document.createElement("button")
+            deleteButton.innerHTML =  "❌"
+            deleteButton.classList.add("sub-icon")
+            deleteButton.setAttribute("onclick", "deleteItem(this)")
+            
+            return { folderButton, fileButton, deleteButton };
+        }
+
+        function createArrowIcon(){
+            let arrowIcon = document.createElement("span");
+            arrowIcon.classList.add("rotate")
+            arrowIcon.setAttribute("onclick", "toggleCollapse(this)")
+            arrowIcon.innerHTML = "➡️"
+            return arrowIcon;
+        }
+
 
         function createFileNode(name, type){
             let newObj ={
@@ -128,32 +154,6 @@
             let deleteId = parentElement.id;
             deleteNode(parentId, data, deleteId);
             folderStructure.removeChild(parentElement);
-        }
- function createFolderButtons(){
-            let folderButton = document.createElement("button");
-            folderButton.innerText = "📁";
-            folderButton.classList.add("sub-icon")
-            folderButton.setAttribute("onclick", "addFolder(this)")
-
-            let fileButton = document.createElement("button")
-            fileButton.innerHTML ="📄"
-            fileButton.classList.add("sub-icon")
-            fileButton.setAttribute("onclick", "addFile(this)")
-
-            let deleteButton = document.createElement("button")
-            deleteButton.innerHTML =  "❌"
-            deleteButton.classList.add("sub-icon")
-            deleteButton.setAttribute("onclick", "deleteItem(this)")
-            
-            return { folderButton, fileButton, deleteButton };
-        }
-
-        function createArrowIcon(){
-            let arrowIcon = document.createElement("span");
-            arrowIcon.classList.add("rotate")
-            arrowIcon.setAttribute("onclick", "toggleCollapse(this)")
-            arrowIcon.innerHTML = "➡️"
-            return arrowIcon;
         }
 
 
