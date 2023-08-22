@@ -1,7 +1,3 @@
-// impure function
-
-// iteration function ================================================================
-
 const Iterate_Children_for_print = ( main_div ,  children ) => {
 
     for(let obj of children){
@@ -47,19 +43,16 @@ const Iterate_Data_For_Getting_ParentObj = ( findId ,  children ) => {
             }
         }
     }
-    return null; // Return null if not found
+    return null; 
 }
 
 
-// Actions Function ========================================================================
 
 const onClickFolder = (event)=>{
     let inputValue = document.getElementById("InputValueId");
     let parentObj = Iterate_Data_For_Getting_ParentObj(event.parentNode.id , data);
 
     let arrayOfChildren = parentObj.children;
-
-    // console.log(arrayOfChildren)
     for(let obj of arrayOfChildren){
         if(obj.name === inputValue.value){
             alert("The given name is already exist");
@@ -85,7 +78,7 @@ const onClickFile = (event)=>{
     
     Iterate_Children_And_Push(parentObj.id , data, newobj);
 
-    // main section children delete
+   
     let main_div = document.getElementById("main");
     main_div.innerHTML = '';
     parentid = 0;
