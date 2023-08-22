@@ -1,0 +1,44 @@
+body{
+    background-color: aquamarine;
+}
+#InputValueId{
+    border: solid;
+    border-radius: 21px;
+    width: 168px;
+    height: 36px;
+}
+
+.collapse{
+    display: none;
+}
+
+span.rotating{
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+
+    display: inline-block;
+}
+
+span.normal{
+    background:none;
+    border: none;
+    cursor: pointer;
+    transform: rotate(00deg);
+    -ms-transform: rotate(00deg);
+    -webkit-transform: rotate(00deg);
+}
+
+.box{
+    display:flex;
+}
+
+.sub-icon{
+    background: none;
+    border: none;
+    cursor: pointer;
+}
