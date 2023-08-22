@@ -1,150 +1,156 @@
-// pure function
-let parentid = 0;
+    let folderIdCounter = 0;
 
-// function for creating unique id ====================================================
+        function generateUniqueId(){
+            folderIdCounter++;
+            return folderIdCounter;
+        }
 
-function unique_id(){
-    parentid++;
-    return parentid;
-}
+        function createFolderButtons(){
+            let folderButton = document.createElement("button");
+            folderButton.innerText = "📁";
+            folderButton.classList.add("sub-icon")
+            folderButton.setAttribute("onclick", "addFolder(this)")
 
-// functions for creating button and icons  =============================================
+            let fileButton = document.createElement("button")
+            fileButton.innerHTML ="📄"
+            fileButton.classList.add("sub-icon")
+            fileButton.setAttribute("onclick", "addFile(this)")
 
-
-function creating_button(){
-    let folder_button = document.createElement("button");
-    folder_button.innerText = "📁";
-    folder_button.classList.add("sub-icon")
-    folder_button.setAttribute("onclick" , "onClickFolder(this)")
-
-    let file_button = document.createElement("button")
-    file_button.innerHTML = "&#128196;"
-    file_button.classList.add("sub-icon")
-    file_button.setAttribute("onclick" , "onClickFile(this)")
-
-    let delete_button = document.createElement("button")
-    delete_button.innerHTML = " &#x2715;"
-    delete_button.classList.add("sub-icon")
-    delete_button.setAttribute("onclick" , "onClickDelete(this)")
-   
-    return {folder_button , file_button , delete_button};
-}
-function creating_arrow(){
-    let arrow_icon = document.createElement("span");
-    arrow_icon.classList.add("rotate")
-    arrow_icon.setAttribute("onclick" , "checkClassCollapse(this)")
-    arrow_icon.innerHTML = "&#10148;"
-    return  arrow_icon;
-}
-
-// functions for performing operation on list ========================================
-
-function createFileNode(parentObj, fileName , fileType ){
-    let newObj ={
-        type: fileType,
-        name: fileName ,
-        id: "FileId" + unique_id(),
-        children: null,
-        level: parentObj.level + 1
-    }
-    return newObj;
-}
-
-const createFolderNode = ( parentObj , folderName , folderType ) => {
-let newObj ={
-    type: folderType,
-    name: folderName ,
-    id: "FolderId"+ unique_id(),
-    children:[],
-    level: (parentObj.level) + 1
-}
-    return newObj;
-}
-
-const deleteNode = (id, childrenArray , deleteId) => {
-   if(id ==="main"){
-    id = "main_section"
-   }
-
-    for (let i = 0 ; i < childrenArray.length ; i++) {
-        if (id === childrenArray[i].id) {
-            let childArray = childrenArray[i].children;
+            let deleteButton = document.createElement("button")
+            deleteButton.innerHTML =  "❌"
+            deleteButton.classList.add("sub-icon")
+            deleteButton.setAttribute("onclick", "deleteItem(this)")
             
-            let index = childArray.findIndex((obj) => obj.id === deleteId);
-            childrenArray[i].children.splice(index , 1);
-            return;                
+            return { folderButton, fileButton, deleteButton };
         }
-        if (childrenArray[i].children != null) {
-            deleteNode(id, childrenArray[i].children , deleteId);  // Recursively search nested children
+
+        function createArrowIcon(){
+            let arrowIcon = document.createElement("span");
+            arrowIcon.classList.add("rotate")
+            arrowIcon.setAttribute("onclick", "toggleCollapse(this)")
+            arrowIcon.innerHTML = "➡️"
+            return arrowIcon;
         }
-    }
 
-}
+        function createFileNode(name, type){
+            let newObj ={
+                type: type,
+                name: name,
+                id: "Item" + generateUniqueId(),
+                children: null,
+                level: 1
+            }
+            return newObj;
+        }
 
+        const createFolderNode = (name, type) => {
+            let newObj ={
+                type: type,
+                name: name,
+                id: "Item"+ generateUniqueId(),
+                children:[],
+                level: 1
+            }
+            return newObj;
+        }
 
-// functions for performing operation on DOM ===============================================
+        const deleteNode = (id, itemsArray, deleteId) => {
+            if(id === "folderStructure"){
+                id = "root"
+            }
 
-function createFile(name , obj){
+            for (let i = 0 ; i < itemsArray.length ; i++) {
+                if (id === itemsArray[i].id) {
+                    let childArray = itemsArray[i].children;
+                    
+                    let index = childArray.findIndex((obj) => obj.id === deleteId);
+                    itemsArray[i].children.splice(index , 1);
+                    return;                
+                }
+                if (itemsArray[i].children != null) {
+                    deleteNode(id, itemsArray[i].children , deleteId);
+                }
+            }
+        }
 
-    let main_div = document.createElement("div");
-    main_div.id = unique_id(); 
-    main_div.style.paddingLeft = ((obj.level) * 10) + "px";
-    main_div.innerHTML = name;
-    let  {delete_button} = creating_button();
-    main_div.appendChild(delete_button)
-    return main_div
-}
+        function createFileElement(name , obj){
+            let mainDiv = document.createElement("div");
+            mainDiv.id = generateUniqueId(); 
+            mainDiv.style.paddingLeft = ((obj.level) * 10) + "px";
+            mainDiv.innerHTML = name;
+            let  {deleteButton} = createFolderButtons();
+            mainDiv.appendChild(deleteButton)
+            return mainDiv;
+        }
 
-function createFolder(name , obj ){
+        function createFolderElement(name , obj ){
+            let mainDiv = document.createElement("div");
+            mainDiv.id = obj.id;
+            mainDiv.style.paddingLeft = ((obj.level) * 10) + "px";
 
-    let main_div = document.createElement("div");
-    main_div.id = obj.id;
-    main_div.style.paddingLeft = ((obj.level) * 10) + "px";
+            let arrowButton = createArrowIcon();
+            let  {folderButton , fileButton , deleteButton} = createFolderButtons();
+            
+            let folderName = document.createElement("span");
+            folderName.innerText = name;
 
-    let arrow_button = creating_arrow();
-    let  {folder_button , file_button , delete_button} = creating_button();
-    
-    let folder_name = document.createElement("span");
-    folder_name.innerText = name;
+            mainDiv.appendChild(arrowButton);
+            mainDiv.appendChild(folderName)
+            mainDiv.appendChild(folderButton);
+            mainDiv.appendChild(fileButton);
+            mainDiv.appendChild(deleteButton);
+            
+            let childrenDiv = document.createElement("div");
+            childrenDiv.id = generateUniqueId();
+            
+            mainDiv.appendChild(childrenDiv)
+            return mainDiv;
+        }
 
-    main_div.appendChild(arrow_button);
-    main_div.appendChild(folder_name)
-    main_div.appendChild(folder_button);
-    main_div.appendChild(file_button);
-    main_div.appendChild(delete_button);
-    
-    // for appending children
-    let children_div = document.createElement("div");
-    children_div.id = unique_id();
-    
-    main_div.appendChild(children_div)
-    // console.log(main_div);
-    return main_div;
-}
+        const toggleCollapse = (event) =>{
+            let lastchild = event.parentNode.lastElementChild;
 
-const checkClassCollapse = (event) =>{
-    let lastchild = event.parentNode.lastElementChild;
-    console.log(lastchild)
+            if(lastchild.classList.length == 0){
+                lastchild.classList.add("collapse");
+                event.classList.remove("rotate");
+                event.classList.add("normal")
+            }
+            else{
+                lastchild.classList.remove("collapse")
+                event.classList.add("rotate");
+                event.classList.remove("normal")
+            }
+        }
 
-    if(lastchild.classList.length == 0){
-        lastchild.classList.add("collapse");
-        event.classList.remove("rotate");
-        event.classList.add("normal")
-    }
-    else{
-        lastchild.classList.remove("collapse")
-        event.classList.add("rotate");
-        event.classList.remove("normal")
-    }
+        const folderStructure = document.getElementById("folderStructure");
+        const createFolderBtn = document.getElementById("createFolder");
+        const createFileBtn = document.getElementById("createFile");
 
+        createFolderBtn.addEventListener("click", addFolder);
+        createFileBtn.addEventListener("click", addFile);
 
-}
+        createFolderNode("Root", "folder"); // Initialize with a root folder.
 
+        function addFolder() {
+            let folderName = document.getElementById("itemName").value;
+            let parentObj = createFolderNode(folderName, "folder");
+            let mainDiv = document.createElement("div");
+            mainDiv.appendChild(createFolderElement(folderName, parentObj));
+            folderStructure.appendChild(mainDiv);
+        }
 
+        function addFile() {
+            let fileName = document.getElementById("itemName").value;
+            let parentObj = createFileNode(fileName, "file");
+            let mainDiv = document.createElement("div");
+            mainDiv.appendChild(createFileElement(fileName, parentObj));
+            folderStructure.appendChild(mainDiv);
+        }
 
-
-
-
-
-
-
+        function deleteItem(element) {
+            let parentElement = element.parentNode;
+            let parentId = parentElement.parentNode.id;
+            let deleteId = parentElement.id;
+            deleteNode(parentId, data, deleteId);
+            folderStructure.removeChild(parentElement);
+        }
