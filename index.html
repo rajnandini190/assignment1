@@ -1,15 +1,11 @@
+</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Explorer</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-    <script src="store.js"></script>
-    <script src="util.js"></script>
-    <script src="operation.js"></script>
-    <script src="index.js"></script>
+    <link rel="stylesheet" href="style.css"> <!-- Assuming you have a separate CSS file -->
 </head>
 <body onload="myFunction()">
     <section class="header">
@@ -18,14 +14,20 @@
     </section>
     <br>
     <section id="main">
-          <span class="rotating" onclick="checkClassCollapse(this)">&#10148;</span>
-          <span>Root</span>
-          <button class="sub-icon" id="addFolder" style="cursor: pointer;" onclick="onClickFolder(this)"> &#128193;</button>
-          <button class="sub-icon" id="addFile"style="cursor: pointer;" onclick="onClickFile(this)">&#128196;</button>
-          <button class="sub-icon" id ="deletebutton1" style="cursor: pointer;" onclick="onClickDelete(this)"> &#x2715;</button>
-                 <div id ="m">
-                        
-     </div> 
+        <span class="rotating" onclick="checkClassCollapse(this)">&#10148;</span>
+        <span>Root</span>
+        <button class="sub-icon" id="addFolder" style="cursor: pointer;" onclick="onClickFolder(this)"> &#128193;</button>
+        <button class="sub-icon" id="addFile" style="cursor: pointer;" onclick="onClickFile(this)">&#128196;</button>
+        <button class="sub-icon" id="deletebutton1" style="cursor: pointer;" onclick="onClickDelete(this)"> &#x2715;</button>
+        <div id="folderStructure">
+            <!-- This is where the dynamically generated content will go -->
+        </div>
     </section>
+
+    <script src="script.js"></script>
+    <script src="store.js"></script>
+    <script src="util.js"></script>
+    <script src="operation.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>
