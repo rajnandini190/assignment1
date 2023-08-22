@@ -1,137 +1,136 @@
-const Iterate_Children_for_print = ( main_div ,  children ) => {
 
-    for(let obj of children){
-        let addingdiv
-        if(obj.type === "file"){
-            addingdiv = createFile(obj.name , obj);
+const iterateChildrenAndPush = (targetId, childrenArray, newItem) => {
+
+    for(let child of childrenArray){
+        if(targetId === child.id){
+            child.children.push(newItem)
+            return;
+        }
+
+        if(child.children != null){
+            iterateChildrenAndPush(targetId, child.children, newItem);
+        }
+    }
+}
+const iterateChildrenForPrint = (mainDiv, childrenArray) => {
+
+    for(let child of childrenArray){
+        let childElement;
+        if(child.type === "file"){
+            childElement = createFileElement(child.name, child);
         }
         else{
-            addingdiv = createFolder(obj.name , obj);
+            childElement = createFolderElement(child.name, child);
         }
-        main_div.appendChild(addingdiv);
-        if(obj.children != null){
-            Iterate_Children_for_print( addingdiv.lastElementChild , obj.children )
+        mainDiv.appendChild(childElement);
+        if(child.children != null){
+            iterateChildrenForPrint(childElement.lastElementChild, child.children);
         }
     }
 }
-const Iterate_Children_And_Push = ( findId ,  children , newObject  ) => {
 
-    for(let obj of children){
-            if(findId === obj.id){
-                obj.children.push(newObject)
-                return;
-            }
-
-           if(obj.children != null){
-            Iterate_Children_And_Push( findId , obj.children , newObject );
-           }
-    }
-}
-const Iterate_Data_For_Getting_ParentObj = ( findId ,  children ) => {
-    let ans;
-    // console.log(findId)
-    for (let obj of children) {
-        if (findId == obj.id) {
-            return obj;
+const iterateDataForGettingParent = (targetId, childrenArray) => {
+    let result;
+    for (let child of childrenArray) {
+        if (targetId == child.id) {
+            return child;
         }
 
-        if (obj.children != null) {
-            ans = Iterate_Data_For_Getting_ParentObj(findId, obj.children);
-            if (ans) {
-                // console.log(obj)
-                return ans; // Return the answer if found in deeper levels
+        if (child.children != null) {
+            result = iterateDataForGettingParent(targetId, child.children);
+            if (result) {
+                return result;
             }
         }
     }
-    return null; 
+    return null;
 }
 
-
-
-const onClickFolder = (event)=>{
+const onClickFolder = (event) => {
     let inputValue = document.getElementById("InputValueId");
-    let parentObj = Iterate_Data_For_Getting_ParentObj(event.parentNode.id , data);
+    let parentItem = iterateDataForGettingParent(event.parentNode.id, data);
 
-    let arrayOfChildren = parentObj.children;
-    for(let obj of arrayOfChildren){
-        if(obj.name === inputValue.value){
-            alert("The given name is already exist");
+    let childrenArray = parentItem.children;
+    for(let child of childrenArray){
+        if(child.name === inputValue.value){
+            alert("The given name already exists.");
             return;
         }
     }
-    let newobj =  createFolderNode(parentObj , inputValue.value , "folder");
+    let newItem = createFolderNode(parentItem, inputValue.value, "folder");
 
-    Iterate_Children_And_Push(parentObj.id , data, newobj);
+    iterateChildrenAndPush(parentItem.id, data, newItem);
     
-    let main_div = document.getElementById("main");
-    main_div.innerHTML = '';
+    let mainDiv = document.getElementById("main");
+    mainDiv.innerHTML = '';
     parentid = 0;
 
-    Iterate_Children_for_print(main_div , data[0].children )
+    iterateChildrenForPrint(mainDiv, data[0].children);
 }
 
-const onClickFile = (event)=>{
+const onClickFile = (event) => {
     let inputValue = document.getElementById("InputValueId");
     
-    let parentObj = Iterate_Data_For_Getting_ParentObj(event.parentNode.id , data);
-    let newobj =  createFileNode( parentObj , inputValue.value , "file" );
+    let parentItem = iterateDataForGettingParent(event.parentNode.id, data);
+    let newItem = createFileNode(parentItem, inputValue.value, "file");
     
-    Iterate_Children_And_Push(parentObj.id , data, newobj);
+    iterateChildrenAndPush(parentItem.id, data, newItem);
 
    
-    let main_div = document.getElementById("main");
-    main_div.innerHTML = '';
+    let mainDiv = document.getElementById("main");
+    mainDiv.innerHTML = '';
     parentid = 0;
-    Iterate_Children_for_print(main_div , data[0].children )  
+    iterateChildrenForPrint(mainDiv, data[0].children);  
 }
 
 const onClickDelete = (event) =>{
      let parentId = event.parentNode.parentNode.id;
-    deleteNode(parentId , data , event.parentNode.id)
-    let main_div = document.getElementById("main");
-    main_div.innerHTML = '';
+    deleteNode(parentId, data, event.parentNode.id);
+    let mainDiv = document.getElementById("main");
+    mainDiv.innerHTML = '';
     parentid = 0;
-    Iterate_Children_for_print(main_div , data[0].children )
+    iterateChildrenForPrint(mainDiv, data[0].children);
 }
 
-const renameItem = (folderList, index)=>{
+const renameItem = (folderList, itemId) => {
     for (let item of folderList) {
-        if (item.id == index) {
-            let a = prompt("Please enter new file/folder name.");
-            let elem = document.getElementById(index);
-            let parentObj = findItems(store, elem.parentNode.id);
-            for(const child of parentObj.children){
-                if(child.name === a){
-                    alert("Folder/File with this name already exists in this Folder!, Please try a different name!");
+        if (item.id == itemId) {
+            let newName = prompt("Please enter a new name for the file/folder.");
+            let element = document.getElementById(itemId);
+            let parentItem = iterateDataForGettingParent(store, element.parentNode.id);
+            for(const child of parentItem.children){
+                if(child.name === newName){
+                    alert("A folder/file with this name already exists in this folder. Please choose a different name.");
                     return;
                 }
             }
-            console.log(elem);
-            let childCount = elem.childElementCount;
-            if(a!=null && a!=""){
-                console.log(checkFileName(a));
-                while(!checkFileName(a)){
-                    window.alert("File name should not be grater than 10 char and should not contain a numnber");
-                    a = window.prompt("Please try again!");
+            console.log(element);
+            let childCount = element.childElementCount;
+            if(newName != null && newName != ""){
+                console.log(checkFileName(newName));
+                while(!checkFileName(newName)){
+                    window.alert("The name should be less than 10 characters and should not contain numbers.");
+                    newName = window.prompt("Please try again!");
                 }
-                item.name = a;
+                item.name = newName;
                 console.log(childCount);
-                let requiredElem;
+                let requiredElement;
                 if(childCount === 3){
-                    requiredElem = elem.firstElementChild
+                    requiredElement = element.firstElementChild;
                 }else{
-                    requiredElem = elem.firstElementChild.nextElementSibling
+                    requiredElement = element.firstElementChild.nextElementSibling;
                 }
-                console.log(requiredElem)
-                requiredElem.innerHTML = a;
+                console.log(requiredElement);
+                requiredElement.innerHTML = newName;
             }
             checkFileName("");
         }
         if (item.type == "folder") {
-            answer = renameItem(item.children, index);
+            renameItem(item.children, itemId);
         }
     }
 }
+
 
 
 
