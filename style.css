@@ -1,8 +1,12 @@
 body{
     background-color: aquamarine;
 }
+.header{
+    border: 2px solid blue;
+    margin-left:50px;
+}
 #InputValueId{
-    border: solid;
+    border: 2px solid blue;
     border-radius: 21px;
     width: 168px;
     height: 36px;
