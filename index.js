@@ -1,9 +1,10 @@
-// common bond and entry point to the javascript
-
-
 function myFunction(){
-    const middle_section = document.getElementById("main_section");
-    let main_div = document.getElementById("main")
+    const middle = document.getElementById("main");
+    let maindiv = document.getElementById("m")
+      if (!middle || !mainDiv) {
+        console.error("One or both of the elements were not found.");
+        return;
+    }
     let level = 0;
   
 }
