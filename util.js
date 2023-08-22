@@ -5,32 +5,7 @@
             return folderIdCounter;
         }
 
-        function createFolderButtons(){
-            let folderButton = document.createElement("button");
-            folderButton.innerText = "📁";
-            folderButton.classList.add("sub-icon")
-            folderButton.setAttribute("onclick", "addFolder(this)")
-
-            let fileButton = document.createElement("button")
-            fileButton.innerHTML ="📄"
-            fileButton.classList.add("sub-icon")
-            fileButton.setAttribute("onclick", "addFile(this)")
-
-            let deleteButton = document.createElement("button")
-            deleteButton.innerHTML =  "❌"
-            deleteButton.classList.add("sub-icon")
-            deleteButton.setAttribute("onclick", "deleteItem(this)")
-            
-            return { folderButton, fileButton, deleteButton };
-        }
-
-        function createArrowIcon(){
-            let arrowIcon = document.createElement("span");
-            arrowIcon.classList.add("rotate")
-            arrowIcon.setAttribute("onclick", "toggleCollapse(this)")
-            arrowIcon.innerHTML = "➡️"
-            return arrowIcon;
-        }
+       
 
         function createFileNode(name, type){
             let newObj ={
@@ -154,3 +129,48 @@
             deleteNode(parentId, data, deleteId);
             folderStructure.removeChild(parentElement);
         }
+ function createFolderButtons(){
+            let folderButton = document.createElement("button");
+            folderButton.innerText = "📁";
+            folderButton.classList.add("sub-icon")
+            folderButton.setAttribute("onclick", "addFolder(this)")
+
+            let fileButton = document.createElement("button")
+            fileButton.innerHTML ="📄"
+            fileButton.classList.add("sub-icon")
+            fileButton.setAttribute("onclick", "addFile(this)")
+
+            let deleteButton = document.createElement("button")
+            deleteButton.innerHTML =  "❌"
+            deleteButton.classList.add("sub-icon")
+            deleteButton.setAttribute("onclick", "deleteItem(this)")
+            
+            return { folderButton, fileButton, deleteButton };
+        }
+
+        function createArrowIcon(){
+            let arrowIcon = document.createElement("span");
+            arrowIcon.classList.add("rotate")
+            arrowIcon.setAttribute("onclick", "toggleCollapse(this)")
+            arrowIcon.innerHTML = "➡️"
+            return arrowIcon;
+        }
+
+
+function checkFileName(event){
+    if(typeof event === "string"){
+        fileName = event
+    }else{
+        fileName = event.value;
+    }
+    let regex = /^([a-zA-Z]){1,10}$/;
+    let regex1 = /^([a-zA-Z]){0}$/;
+    
+    if(!fileName.match(regex) && !fileName.match(regex1)){
+        let a = document.getElementsByClassName("sub-icon")
+        for(let i=0 ; i<a.length; i++){
+            a[i].style.display = "none"
+        }
+        alert("File name should be less than 10 char & it should not contain number!!")
+    }
+}
