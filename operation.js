@@ -1,4 +1,41 @@
-
+// const renameItem = (folderList, itemId) => {
+//     for (let item of folderList) {
+//         if (item.id == itemId) {
+//             let newName = prompt("Please enter a new name for the file/folder.");
+//             let element = document.getElementById(itemId);
+//             let parentItem = iterateDataForGettingParent(store, element.parentNode.id);
+//             for(const child of parentItem.children){
+//                 if(child.name === newName){
+//                     alert("A folder/file with this name already exists in this folder. Please choose a different name.");
+//                     return;
+//                 }
+//             }
+//             console.log(element);
+//             let childCount = element.childElementCount;
+//             if(newName != null && newName != ""){
+//                 console.log(checkFileName(newName));
+//                 while(!checkFileName(newName)){
+//                     window.alert("The name should be less than 10 characters and should not contain numbers.");
+//                     newName = window.prompt("Please try again!");
+//                 }
+//                 item.name = newName;
+//                 console.log(childCount);
+//                 let requiredElement;
+//                 if(childCount === 3){
+//                     requiredElement = element.firstElementChild;
+//                 }else{
+//                     requiredElement = element.firstElementChild.nextElementSibling;
+//                 }
+//                 console.log(requiredElement);
+//                 requiredElement.innerHTML = newName;
+//             }
+//             checkFileName("");
+//         }
+//         if (item.type == "folder") {
+//             renameItem(item.children, itemId);
+//         }
+//     }
+// }
 const iterateChildrenAndPush = (targetId, childrenArray, newItem) => {
 
     for(let child of childrenArray){
@@ -92,44 +129,6 @@ const onClickDelete = (event) =>{
     iterateChildrenForPrint(mainDiv, data[0].children);
 }
 
-// const renameItem = (folderList, itemId) => {
-//     for (let item of folderList) {
-//         if (item.id == itemId) {
-//             let newName = prompt("Please enter a new name for the file/folder.");
-//             let element = document.getElementById(itemId);
-//             let parentItem = iterateDataForGettingParent(store, element.parentNode.id);
-//             for(const child of parentItem.children){
-//                 if(child.name === newName){
-//                     alert("A folder/file with this name already exists in this folder. Please choose a different name.");
-//                     return;
-//                 }
-//             }
-//             console.log(element);
-//             let childCount = element.childElementCount;
-//             if(newName != null && newName != ""){
-//                 console.log(checkFileName(newName));
-//                 while(!checkFileName(newName)){
-//                     window.alert("The name should be less than 10 characters and should not contain numbers.");
-//                     newName = window.prompt("Please try again!");
-//                 }
-//                 item.name = newName;
-//                 console.log(childCount);
-//                 let requiredElement;
-//                 if(childCount === 3){
-//                     requiredElement = element.firstElementChild;
-//                 }else{
-//                     requiredElement = element.firstElementChild.nextElementSibling;
-//                 }
-//                 console.log(requiredElement);
-//                 requiredElement.innerHTML = newName;
-//             }
-//             checkFileName("");
-//         }
-//         if (item.type == "folder") {
-//             renameItem(item.children, itemId);
-//         }
-//     }
-// }
 
 
 
