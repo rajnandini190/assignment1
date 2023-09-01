@@ -36,23 +36,23 @@
 //         }
 //     }
 // }
-const iterateChildrenAndPush = (targetId, childrenArray, newItem) => {
+// const iterateChildrenAndPush = (targetId, childrenArray, newItem) => {
 
-    for(let child of childrenArray){
-        if(targetId === child.id){
-            child.children.push(newItem)
-            return;
-        }
+//     for(let child of childrenArray){
+//         if(targetId === child.id){
+//             child.children.push(newItem)
+//             return;
+//         }
 
-        if(child.children != null){
-            iterateChildrenAndPush(targetId, child.children, newItem);
-        }
-    }
-}
+//         if(child.children != null){
+//             iterateChildrenAndPush(targetId, child.children, newItem);
+//         }
+//     }
+// }
 const iterateChildrenForPrint = (mainDiv, childrenArray) => {
 
     for(let child of childrenArray){
-        let childElement;
+        let childElement
         if(child.type === "file"){
             childElement = createFileElement(child.name, child);
         }
@@ -65,7 +65,19 @@ const iterateChildrenForPrint = (mainDiv, childrenArray) => {
         }
     }
 }
+const iterateChildrenAndPush = (targetId, childrenArray, newItem) => {
 
+ for(let child of childrenArray){
+      if(targetId === child.id){
+     child.children.push(newItem)
+          return;
+      }
+
+       if(child.children != null){
+          iterateChildrenAndPush(targetId, child.children, newItem);
+      }
+   }
+ }
 const iterateDataForGettingParent = (targetId, childrenArray) => {
     let result;
     for (let child of childrenArray) {
@@ -83,7 +95,7 @@ const iterateDataForGettingParent = (targetId, childrenArray) => {
     return null;
 }
 
-const onClickFolder = (event) => {
+const addFolder = (event) => {
     let inputValue = document.getElementById("InputValueId");
     let parentItem = iterateDataForGettingParent(event.parentNode.id, data);
 
@@ -105,7 +117,7 @@ const onClickFolder = (event) => {
     iterateChildrenForPrint(mainDiv, data[0].children);
 }
 
-const onClickFile = (event) => {
+const addFile = (event) => {
     let inputValue = document.getElementById("InputValueId");
     
     let parentItem = iterateDataForGettingParent(event.parentNode.id, data);
@@ -120,7 +132,7 @@ const onClickFile = (event) => {
     iterateChildrenForPrint(mainDiv, data[0].children);  
 }
 
-const onClickDelete = (event) =>{
+const deleteItem = (event) =>{
      let parentId = event.parentNode.parentNode.id;
     deleteNode(parentId, data, event.parentNode.id);
     let mainDiv = document.getElementById("folderStructure");
